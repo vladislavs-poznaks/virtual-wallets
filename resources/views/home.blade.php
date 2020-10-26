@@ -1,23 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <div class="flex">
+        <div class="flex w-1/6">
+            @include('_sidebar-links')
+        </div>
+        <div class="w-1/2">
+            @include('_create-wallet')
 
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
+            @include('_wallets-index')
+        </div>
+        <div class="flex w-1/4 ml-20">
+            @include('_last-transactions')
         </div>
     </div>
-</div>
+
+
 @endsection
