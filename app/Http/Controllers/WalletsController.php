@@ -9,9 +9,9 @@ class WalletsController extends Controller
 {
     public function show($id)
     {
-
         return view('show', [
             'wallet' => Wallet::where('id', $id)->first(),
+            'availableWallets' => auth()->user()->wallets
         ]);
     }
 

@@ -1,6 +1,10 @@
 <div class="border border-gray-700 rounded-lg px-4 py-6">
 
-    <h3>Wallet: "{{ $wallet->name }}"</h3>
+    <div class="flex justify-between">
+        <h3>Wallet: "{{ $wallet->name }}"</h3>
+        <h3>Funds remaining: ${{ $wallet->amount / 100 }}</h3>
+    </div>
+
 
     <form action="/wallets/{{ $wallet->id }}" method="POST" class="space-y-6">
 
