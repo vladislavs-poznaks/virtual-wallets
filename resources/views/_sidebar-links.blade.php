@@ -1,7 +1,7 @@
 <ul>
     <li>
         <a
-            href="#"
+            href="/home"
             class="font-bold text-lg mb-4 block hover:text-gray-400"
         >Home</a>
     </li>

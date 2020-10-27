@@ -8,14 +8,14 @@
         </div>
 
         <div class="w-1/2">
-            
-            @include('_create-wallet')
+
+            @include('_wallet-header')
 
             <div class="border border-gray-700 rounded-lg mt-10">
-                <h3 class="border-b border-gray-700 px-4 py-6">My Wallets</h3>
-                @foreach($wallets as $wallet)
-                    @include('_wallet')
-                @endforeach
+                <h3 class="border-b border-gray-700 px-4 py-6">Transactions</h3>
+{{--                @foreach($wallets as $wallet)--}}
+{{--                    @include('_wallet')--}}
+{{--                @endforeach--}}
             </div>
 
         </div>

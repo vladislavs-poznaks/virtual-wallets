@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WalletsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/wallets', [WalletsController::class, 'store']);
+
+Route::get('/wallets/{id}', [WalletsController::class, 'show'])->name('wallet.show');
+Route::patch('/wallets/{id}', [WalletsController::class, 'update']);
+Route::delete('/wallets/{id}', [WalletsController::class, 'destroy']);
+
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
