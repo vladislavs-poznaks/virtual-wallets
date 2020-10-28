@@ -7,25 +7,36 @@ use Illuminate\Contracts\Validation\Rule;
 class ValidAmount implements Rule
 {
     /**
+     * @var int
+     */
+    private $min;
+    /**
+     * @var int
+     */
+    private $max;
+
+    /**
      * Create a new rule instance.
      *
-     * @return void
+     * @param int $min
+     * @param int $max
      */
-    public function __construct()
+    public function __construct(int $min = 100, int $max = 500)
     {
-        //
+        $this->min = $min;
+        $this->max = $max;
     }
 
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        return $value >= 100 && $value <= 500;
+        return $value >= $this->min && $value <= $this->max;
     }
 
     /**
@@ -35,6 +46,6 @@ class ValidAmount implements Rule
      */
     public function message()
     {
-        return 'The :attribute must be between 100 and 500';
+        return 'The :attribute must be between ' . $this->min . ' and ' . $this->max . '.';
     }
 }

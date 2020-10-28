@@ -15,7 +15,28 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('from_wallet_id');
+            $table->foreignId('to_wallet_id');
+            $table->integer('cents');
+            $table->boolean('fraudulent')->default(false);
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('from_wallet_id')
+                ->references('id')
+                ->on('wallets')
+                ->onDelete('cascade');
+
+            $table->foreign('to_wallet_id')
+                ->references('id')
+                ->on('wallets')
+                ->onDelete('cascade');
+
         });
     }
 

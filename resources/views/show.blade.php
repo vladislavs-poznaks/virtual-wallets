@@ -16,9 +16,11 @@
             <div class="border border-gray-700 rounded-lg mt-10">
                 <h3 class="border-b border-gray-700 px-4 py-6">Transactions</h3>
 
-{{--                @foreach()--}}
+                @forelse($transactions as $transaction)
                     @include('_transaction')
-{{--                @endforeach--}}
+                @empty
+                    No transactions with this wallet...
+                @endforelse
             </div>
 
         </div>

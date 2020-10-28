@@ -1,8 +1,8 @@
 <div class="border border-gray-700 rounded-lg px-4 py-6">
 
-    <div class="flex justify-between">
-        <h3>Wallet: "{{ $wallet->name }}"</h3>
-        <h3>Funds remaining: ${{ $wallet->amount / 100 }}</h3>
+    <div class="flex justify-between text-2xl font-bold">
+        <h2>{{ $wallet->name }}</h2>
+        <h2>{{ $wallet->formattedFunds() }}</h2>
     </div>
 
 
@@ -14,38 +14,34 @@
         <div class="flex items-center">
             <label
                 for="name"
-                class="w-1/5"
-            >Enter new name</label>
+                class="w-2/6"
+            >Rename this wallet</label>
             <input
                 type="text"
                 id="name"
                 name="name"
                 placeholder="Enter a unique wallet's name..."
                 required
-                class="bg-gray-800 text-sm rounded-full focus:outline-none focus:shadow-outline px-3 py-2 ml-4 w-4/5"
+                class="bg-gray-800 text-sm rounded-full focus:outline-none focus:shadow-outline px-3 py-2 ml-4 w-4/6"
             >
-
+            <button
+                type="submit"
+                class="bg-gray-700 rounded-full px-10 py-2 hover:scale-125 ml-6"
+            >Save</button>
         </div>
         @error('name')
             <div class="text-sm text-red-500">{{ $message }}</div>
         @enderror
-
-        <div class="text-center">
-            <button
-                type="submit"
-                class="bg-gray-700 rounded-full px-10 py-2 hover:scale-125"
-            >Rename</button>
-        </div>
     </form>
 
     <form action="/wallets/{{ $wallet->id }}" method="POST" class="mt-4">
         @method('DELETE')
         @csrf
 
-        <div class="text-center">
+        <div class="text-right text-sm text-red-500">
             <button
                 type="submit"
-                class="bg-gray-700 rounded-full px-10 py-2 hover:scale-125"
+                class="hover:underline"
             >Delete this wallet</button>
         </div>
     </form>

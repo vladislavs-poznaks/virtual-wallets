@@ -17,8 +17,14 @@ class CreateWalletsTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('name')->unique();
-            $table->integer('amount');
+            $table->integer('cents');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
         });
     }
 

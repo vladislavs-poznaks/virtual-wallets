@@ -23,12 +23,11 @@
             <div class="text-sm text-red-500">{{ $message }}</div>
         @enderror
         <livewire:amount/>
-
         <div class="text-center">
             <button
                 type="submit"
                 class="bg-gray-700 rounded-full px-10 py-2 hover:scale-125"
-            >Create!</button>
+            >Create</button>
         </div>
     </form>
 </div>

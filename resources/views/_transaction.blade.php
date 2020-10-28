@@ -1,40 +1,55 @@
- <div class="border-b border-gray-700 px-4 py-4 space-y-2">
-    <div class="flex justify-between items-center">
-        <div class="flex space-x-3">
-            <div class="text-green-700">
-                +$200
+ <div class="{{ $loop->last ? '' : 'border-b border-gray-700' }} px-4 py-4 space-y-2">
+        <div class="space-y-2">
+            <div class="flex justify-between items-center">
+                <div class="flex space-x-3">
+                    <div class="text-{{ $debitTransactions->contains($transaction) ? 'green' : 'red' }}-500">
+                        {{ ($debitTransactions->contains($transaction) ? '+' : '-') . $transaction->formattedFunds()}}
+                    </div>
+                    <div>
+                        @if($debitTransactions->contains($transaction))
+                            from {{ $transaction->fromWallet->name }}
+                        @endif
+
+                        @if($creditTransactions->contains($transaction))
+                            to {{ $transaction->toWallet->name }}
+                        @endif
+                    </div>
+                </div>
+                @if($transaction->fraudulent)
+                    <div class="text-sm text-red-500">
+                        (Marked as Fraudulent)
+                    </div>
+                @endif
             </div>
-            <div>
-                from Wallet's Name
-            </div>
-            <div>
-                3 day ago
+
+            <div class="flex justify-between text-sm">
+                <div>
+
+                    <form action="/wallets/{{ $wallet->id }}/transactions/{{ $transaction->id }}" method="POST">
+                        @method('PATCH')
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="hover:underline"
+                        >
+                            {{ $transaction->fraudulent ? 'Not a Fraud' : 'Mark as Fraudulent'}}
+                        </button>
+                    </form>
+                </div>
+                <div>
+                    <form action="/wallets/{{ $wallet->id }}/transactions/{{ $transaction->id }}" method="POST">
+                        @method('DELETE')
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="hover:underline"
+                        >
+                            Delete this transaction
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-
-        <div class="flex space-x-3">
-            <form action="/wallets/{{ $wallet->id }}/transactions/TRANSACTION-ID" method="POST">
-                @method('DELETE')
-                @csrf
-
-                <button
-                    type="submit"
-                    class="bg-gray-700 rounded-full px-10 py-2 hover:scale-125"
-                >
-                    Delete
-                </button>
-            </form>
-            <form action="/wallets/{{ $wallet->id }}/transactions/TRANSACTION-ID/fraudulent" method="POST">
-
-                @csrf
-
-                <button
-                    type="submit"
-                    class="bg-gray-700 rounded-full px-10 py-2 hover:scale-125"
-                >
-                    Fraudulent
-                </button>
-            </form>
-        </div>
-    </div>
  </div>

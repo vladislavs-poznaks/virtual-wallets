@@ -1,13 +1,13 @@
 <div class="bg-gray-700 rounded-lg w-full h-64 px-4 py-6">
-    <h3>Your Wallets</h3>
+    <h3>Your Other Wallets</h3>
     <div class="mt-4 space-y-2">
         @foreach($availableWallets as $wallet)
             <div class="flex justify-between">
-                <a href="/wallets/{{ $wallet->id }}">
+                <a href="/wallets/{{ $wallet->id }}" class="hover:underline">
                     {{ $wallet->name }}
                 </a>
                 <div>
-                    Funds: ${{ $wallet->amount / 100 }}
+                    {{ $wallet->formattedFunds() }}
                 </div>
             </div>
         @endforeach
@@ -19,7 +19,7 @@
                 Total debit:
             </span>
             <span class="text-green-500">
-                + $1000
+                + ${{ $debitTransactions->sum('cents') / 100 }}
             </span>
         </div>
         <div>
@@ -27,7 +27,7 @@
                 Total credit:
             </span>
             <span class="text-red-500">
-                - $1000
+                - ${{ $creditTransactions->sum('cents') / 100 }}
             </span>
         </div>
 

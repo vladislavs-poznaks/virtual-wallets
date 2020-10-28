@@ -1,15 +1,21 @@
 <div class="bg-gray-700 rounded-lg w-full h-64 px-4 py-6">
     <h3>Last Transactions</h3>
     <div class="mt-4 space-y-2">
-        @foreach(range(1, 5) as $item)
-                <div class="flex space-x-2">
-                    <div class="text-red-700">
-                        -$200
-                    </div>
-                    <a href="#" class="hover:underline">
-                        from Wallet #{{ $item }}
-                    </a>
+        @forelse($transactions as $transaction)
+            <div class="flex space-x-2">
+                <div>
+                    {{ $transaction->formattedFunds() }} from
                 </div>
-        @endforeach
+                <a href="/wallets/{{ $transaction->fromWallet->id }}" class="hover:underline">
+                    {{ $transaction->fromWallet->name }}
+                </a>
+                <div> to </div>
+                <a href="/wallets/{{ $transaction->toWallet->id }}" class="hover:underline">
+                    {{ $transaction->toWallet->name }}
+                </a>
+            </div>
+        @empty
+            No transactions yet...
+        @endforelse
     </div>
 </div>

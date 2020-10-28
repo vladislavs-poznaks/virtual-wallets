@@ -6,36 +6,20 @@
 
         <div class="flex items-center">
             <label
-                for="from"
-                class="w-1/5"
-            >From</label>
-            <input
-                type="text"
-                id="from"
-                name="from"
-                placeholder="From which wallet to withdraw..."
-                required
-                class="bg-gray-800 text-sm rounded-full focus:outline-none focus:shadow-outline px-3 py-2 ml-4 w-4/5"
-            >
-
-        </div>
-        @error('from')
-            <div class="text-sm text-red-500">{{ $message }}</div>
-        @enderror
-
-        <div class="flex items-center">
-            <label
                 for="to"
                 class="w-1/5"
             >To</label>
-            <input
+            <select
                 type="text"
                 id="to"
                 name="to"
-                placeholder="Send to which wallet..."
                 required
                 class="bg-gray-800 text-sm rounded-full focus:outline-none focus:shadow-outline px-3 py-2 ml-4 w-4/5"
             >
+                @foreach($availableWallets as $walletTo)
+                    <option value="{{ $walletTo->id }}">{{ $walletTo->name }}</option>
+                @endforeach
+            </select>
 
         </div>
         @error('to')
@@ -44,26 +28,26 @@
 
         <div class="flex items-center">
             <label
-                for="to"
+                for="amount"
                 class="w-1/5"
             >Amount</label>
             <input
                 type="number"
-                id="to"
-                name="to"
+                id="amount"
+                name="amount"
                 min="1"
-                max="{{ $wallet->amount / 100 }}"
+                max="{{ $wallet->cents / 100 }}"
                 placeholder="Enter amount..."
                 required
                 class="bg-gray-800 text-sm rounded-full focus:outline-none focus:shadow-outline px-3 py-2 ml-4 w-4/5"
             >
 
         </div>
-        @error('to')
+        @error('amount')
             <div class="text-sm text-red-500">{{ $message }}</div>
         @enderror
 
-        <div class="text-center">
+        <div class="text-right">
             <button
                 type="submit"
                 class="bg-gray-700 rounded-full px-10 py-2 hover:scale-125"

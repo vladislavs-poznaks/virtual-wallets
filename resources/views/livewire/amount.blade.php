@@ -14,7 +14,7 @@
 {{--        <div>$500</div>--}}
     </div>
 
-    <div class="text-center font-semibold">
-        Amount ${{ $amount }}
-    </div>
+    <h2 class="text-center font-bold text-2xl">
+        ${{ $amount }}
+    </h2>
 </div>

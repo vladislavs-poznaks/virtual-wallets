@@ -17,7 +17,7 @@
 
     <header class="flex items-center justify-between mx-auto px-8 py-6">
         <div class="flex items-center space-x-10">
-            <img src="/images/laracasts-logo.svg" alt="logo">
+            <h1 class="text-uppercase text-3xl font-hairline">Virtual Wallets</h1>
         </div>
 
         <div class="flex justify-between items-center space-x-6">

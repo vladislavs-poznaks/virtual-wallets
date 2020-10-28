@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\TransactionsController;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,5 +45,10 @@ class User extends Authenticatable
     public function wallets()
     {
         return $this->hasMany(Wallet::class)->latest();
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class)->latest();
     }
 }
