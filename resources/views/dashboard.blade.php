@@ -15,7 +15,9 @@
                 @forelse($wallets as $wallet)
                     @include('_wallet')
                 @empty
-                    No wallets yet... Create one!
+                    <div class="px-4 py-6">
+                        No wallets yet... Create one!
+                    </div>
                 @endforelse
             </div>
 

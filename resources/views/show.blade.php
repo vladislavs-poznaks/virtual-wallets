@@ -19,7 +19,9 @@
                 @forelse($transactions as $transaction)
                     @include('_transaction')
                 @empty
-                    No transactions with this wallet...
+                    <div class="px-4 py-6">
+                        No transactions with this wallet...
+                    </div>
                 @endforelse
             </div>
 
