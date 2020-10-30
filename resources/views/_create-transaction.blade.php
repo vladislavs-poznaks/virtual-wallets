@@ -1,6 +1,6 @@
 <div class="border border-gray-700 rounded-lg px-4 py-6">
     <h3>Create New Transaction</h3>
-    <form action="/wallets/{{ $wallet->id }}/transactions" method="POST" class="space-y-6">
+    <form action="{{ route('wallets.transactions.store', ['wallet' => $wallet]) }}" method="POST" class="space-y-6">
 
         @csrf
 
@@ -17,7 +17,7 @@
                 class="bg-gray-800 text-sm rounded-full focus:outline-none focus:shadow-outline px-3 py-2 ml-4 w-4/5"
             >
                 @foreach($availableWallets as $walletTo)
-                    <option value="{{ $walletTo->id }}">{{ $walletTo->name }}</option>
+                    <option value="{{ $walletTo->slug }}">{{ $walletTo->name }}</option>
                 @endforeach
             </select>
 

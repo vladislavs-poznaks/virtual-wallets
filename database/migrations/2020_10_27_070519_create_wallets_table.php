@@ -16,6 +16,7 @@ class CreateWalletsTable extends Migration
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->string('slug')->unique();
             $table->string('name')->unique();
             $table->integer('cents');
             $table->timestamps();

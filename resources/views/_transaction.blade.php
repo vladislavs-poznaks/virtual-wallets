@@ -25,7 +25,10 @@
             <div class="flex justify-between text-sm">
                 <div>
 
-                    <form action="/wallets/{{ $wallet->id }}/transactions/{{ $transaction->id }}" method="POST">
+                    <form action="{{ route('wallets.transactions.update', [
+                                        'wallet' => $wallet,
+                                        'transaction' => $transaction
+                                        ]) }}" method="POST">
                         @method('PATCH')
                         @csrf
 
@@ -38,7 +41,10 @@
                     </form>
                 </div>
                 <div>
-                    <form action="/wallets/{{ $wallet->id }}/transactions/{{ $transaction->id }}" method="POST">
+                    <form action="{{ route('wallets.transactions.destroy', [
+                                        'wallet' => $wallet,
+                                        'transaction' => $transaction
+                                        ]) }}" method="POST">
                         @method('DELETE')
                         @csrf
 

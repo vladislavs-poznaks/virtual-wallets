@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Wallet;
 use App\Rules\ValidAmount;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class WalletsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return
+     */
     public function index()
     {
         return view('dashboard', [
@@ -15,53 +22,77 @@ class WalletsController extends Controller
         ]);
     }
 
-    public function show($id)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
     {
-        $wallet = Wallet::where('id', $id)->first();
-
-        return view('show', [
-            'wallet' => $wallet,
-            'availableWallets' => auth()->user()->wallets->except($id),
-            'debitTransactions' => $wallet->debitTransactions,
-            'creditTransactions' => $wallet->creditTransactions,
-            'transactions' => $wallet->transactions()
-        ]);
-    }
-
-    public function store()
-    {
-        $attributes = request()->validate([
+        $attributes = $request->validate([
             'name' => ['required', 'unique:wallets', 'max:20'],
             'amount' => ['required', new ValidAmount()]
         ]);
 
         Wallet::create([
             'user_id' => auth()->user()->id,
+            'slug' => Str::slug($attributes['name']),
             'name' => $attributes['name'],
             'cents' => $attributes['amount'] * 100
         ]);
 
-        return redirect('/dashboard');
+        return redirect(route('dashboard'));
     }
 
-    public function update($id)
+    /**
+     * Display the specified resource.
+     *
+     * @param \App\Models\Wallet $wallet
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Wallet $wallet)
     {
-        $attributes = request()->validate([
-            'name' => ['required', 'unique:wallets', 'max:50']
+        return response()->view('show', [
+            'wallet' => $wallet,
+            'availableWallets' => auth()->user()->wallets->except($wallet->slug),
+            'debitTransactions' => $wallet->debitTransactions,
+            'creditTransactions' => $wallet->creditTransactions,
+            'transactions' => $wallet->transactions()
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Wallet $wallet
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Wallet $wallet)
+    {
+        $attributes = $request->validate([
+            'name' => ['required', 'unique:wallets', 'max:20']
         ]);
 
-        $wallet = Wallet::find($id);
-        $wallet->name = $attributes['name'];
+        $wallet->update([
+                'name' => $attributes['name'],
+                'slug' => Str::slug($attributes['name']),
+            ]);
 
-        $wallet->save();
-
-        return redirect('/wallets/' . $id);
+        return redirect(route('wallets.show', ['wallet' => $wallet]));
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \App\Models\Wallet $wallet
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Wallet $wallet)
     {
-        Wallet::destroy($id);
+        $wallet->delete();
 
-        return redirect('/dashboard');
+        return redirect(route('dashboard'));
     }
 }

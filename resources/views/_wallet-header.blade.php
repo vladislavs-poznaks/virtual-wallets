@@ -6,7 +6,7 @@
     </div>
 
 
-    <form action="/wallets/{{ $wallet->id }}" method="POST" class="space-y-6">
+    <form action="{{ route('wallets.update', ['wallet' => $wallet]) }}" method="POST" class="space-y-6">
 
         @method('PATCH')
         @csrf
@@ -34,7 +34,7 @@
         @enderror
     </form>
 
-    <form action="/wallets/{{ $wallet->id }}" method="POST" class="mt-4">
+    <form action="{{ route('wallets.destroy', ['wallet' => $wallet]) }}" method="POST" class="mt-4">
         @method('DELETE')
         @csrf
 

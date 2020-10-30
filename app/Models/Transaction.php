@@ -9,7 +9,11 @@ class Transaction extends Model
 {
     use HasFactory, Formattable;
 
-    protected $guarded = [];
+    public $incrementing = false;
+
+    protected $fillable = ['id', 'user_id', 'from_wallet_id', 'to_wallet_id', 'cents', 'fraudulent'];
+
+    protected $keyType = 'string';
 
     public function fromWallet()
     {

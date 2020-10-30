@@ -1,6 +1,6 @@
 <div class="border border-gray-700 rounded-lg px-4 py-6">
     <h3>Create New Wallet</h3>
-    <form action="/wallets" method="POST" class="space-y-6">
+    <form action="{{ route('wallets.store') }}" method="POST" class="space-y-6">
 
         @csrf
 

@@ -1,6 +1,5 @@
 <div class="space-y-4">
     <div class="flex space-x-2">
-{{--        <div>$100</div>--}}
         <input
             wire:model="amount"
             type="range"
@@ -11,7 +10,6 @@
             required
             class="w-full"
         >
-{{--        <div>$500</div>--}}
     </div>
 
     <h2 class="text-center font-bold text-2xl">

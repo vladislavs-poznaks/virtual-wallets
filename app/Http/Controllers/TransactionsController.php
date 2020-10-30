@@ -6,45 +6,79 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Rules\DifferentWallet;
 use App\Rules\SufficientFunds;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TransactionsController extends Controller
 {
-    public function store($id)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        $fromWallet = Wallet::find($id);
+        //
+    }
 
-        $attributes = request()->validate([
-            'to' => ['required', new DifferentWallet($fromWallet->id), 'exists:wallets,id'],
-            'amount' => ['required', new SufficientFunds((int) $fromWallet->cents)]
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Wallet $wallet
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request, Wallet $wallet)
+    {
+
+        $attributes = $request->validate([
+            'to' => ['required', new DifferentWallet($wallet->slug), 'exists:wallets,slug'],
+            'amount' => ['required', new SufficientFunds((int) $wallet->cents)]
         ]);
 
         $toWallet = Wallet::find($attributes['to']);
         $cents = $attributes['amount'] * 100;
 
-        $fromWallet->withdraw($cents);
+        $wallet->withdraw($cents);
         $toWallet->deposit($cents);
 
         Transaction::create([
+            'id' => Str::uuid(),
             'user_id' => auth()->user()->id,
-            'from_wallet_id' => $fromWallet->id,
+            'from_wallet_id' => $wallet->id,
             'to_wallet_id' => $toWallet->id,
             'cents' => $cents
         ]);
 
-        return redirect('/wallets/' . $id);
+        return redirect(route('wallets.show', ['wallet' => $wallet]));
     }
 
-    public function update($walletId, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Wallet $wallet
+     * @param \App\Models\Transaction $transaction
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Wallet $wallet, Transaction $transaction)
     {
-        Transaction::find($id)->toggleFraud();
+        $transaction->toggleFraud();
 
-        return redirect('/wallets/' . $walletId);
+        return redirect(route('wallets.show', ['wallet' => $wallet]));
     }
 
-    public function destroy($walletId, $id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \App\Models\Wallet $wallet
+     * @param \App\Models\Transaction $transaction
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Wallet $wallet, Transaction $transaction)
     {
-        Transaction::destroy($id);
+        $transaction->delete();
 
-        return redirect('/wallets/' . $walletId);
+        return redirect(route('wallets.show', ['wallet' => $wallet]));
     }
 }

@@ -3,7 +3,7 @@
     <div class="mt-4 space-y-2">
         @foreach($availableWallets as $wallet)
             <div class="flex justify-between">
-                <a href="/wallets/{{ $wallet->id }}" class="hover:underline">
+                <a href="{{ route('wallets.show', ['wallet' => $wallet]) }}" class="hover:underline">
                     {{ $wallet->name }}
                 </a>
                 <div>

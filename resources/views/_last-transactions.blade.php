@@ -6,7 +6,7 @@
                 <div>
                     {{ $transaction->formattedFunds() }} from
                 </div>
-                <a href="/wallets/{{ $transaction->fromWallet->id }}" class="hover:underline">
+                <a href="{{ route('wallets.show', ['wallet' => $transaction->fromWallet]) }}" class="hover:underline">
                     {{ $transaction->fromWallet->name }}
                 </a>
                 <div> to </div>

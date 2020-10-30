@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\WalletsController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\WalletsController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,20 +16,19 @@ use App\Http\Controllers\TransactionsController;
 */
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [WalletsController::class, 'index']);
-    Route::get('/dashboard', [WalletsController::class, 'index'])->name('home');
 
-    Route::post('/wallets', [WalletsController::class, 'store']);
+    Route::get('/dashboard', [WalletsController::class, 'index'])->name('dashboard');
+    Route::get('/', function () {
+        return view('dashboard');
+    });
 
-    Route::get('/wallets/{id}', [WalletsController::class, 'show']);
+    Route::resource('wallets', WalletsController::class)->only([
+        'show', 'store', 'update', 'destroy'
+    ]);
 
-    Route::patch('/wallets/{id}', [WalletsController::class, 'update']);
-    Route::delete('/wallets/{id}', [WalletsController::class, 'destroy']);
-
-    Route::post('/wallets/{id}/transactions', [TransactionsController::class, 'store']);
-    Route::patch('/wallets/{walletId}/transactions/{id}', [TransactionsController::class, 'update']);
-    Route::delete('/wallets/{walletId}/transactions/{id}', [TransactionsController::class, 'destroy']);
-
+    Route::resource('wallets.transactions', TransactionsController::class)->only([
+        'store', 'update', 'destroy'
+    ]);
 });
 
 Route::get('/', function () {
