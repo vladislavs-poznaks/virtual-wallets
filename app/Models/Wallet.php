@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class Wallet extends Model
 {
@@ -45,14 +44,16 @@ class Wallet extends Model
     public function withdraw(int $cents)
     {
         if ($cents <= $this->cents) {
-            $this->cents -= $cents;
-            $this->save();
+            $this->update([
+                'cents' => $this->cents - $cents
+            ]);
         }
     }
 
     public function deposit(int $cents)
     {
-        $this->cents += $cents;
-        $this->save();
+        $this->update([
+            'cents' => $this->cents + $cents
+        ]);
     }
 }

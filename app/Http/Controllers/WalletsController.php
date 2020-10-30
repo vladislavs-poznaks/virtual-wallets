@@ -30,16 +30,16 @@ class WalletsController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $request->validate([
+        $request->validate([
             'name' => ['required', 'unique:wallets', 'max:20'],
             'amount' => ['required', new ValidAmount()]
         ]);
 
         Wallet::create([
             'user_id' => auth()->user()->id,
-            'slug' => Str::slug($attributes['name']),
-            'name' => $attributes['name'],
-            'cents' => $attributes['amount'] * 100
+            'slug' => Str::slug($request['name']),
+            'name' => $request['name'],
+            'cents' => $request['amount'] * 100
         ]);
 
         return redirect(route('dashboard'));
@@ -71,13 +71,13 @@ class WalletsController extends Controller
      */
     public function update(Request $request, Wallet $wallet)
     {
-        $attributes = $request->validate([
+        $request->validate([
             'name' => ['required', 'unique:wallets', 'max:20']
         ]);
 
         $wallet->update([
-                'name' => $attributes['name'],
-                'slug' => Str::slug($attributes['name']),
+                'name' => $request['name'],
+                'slug' => Str::slug($request['name']),
             ]);
 
         return redirect(route('wallets.show', ['wallet' => $wallet]));

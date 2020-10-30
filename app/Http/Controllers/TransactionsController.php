@@ -12,16 +12,6 @@ use Illuminate\Support\Str;
 class TransactionsController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -31,13 +21,13 @@ class TransactionsController extends Controller
     public function store(Request $request, Wallet $wallet)
     {
 
-        $attributes = $request->validate([
+        $request->validate([
             'to' => ['required', new DifferentWallet($wallet->slug), 'exists:wallets,slug'],
             'amount' => ['required', new SufficientFunds((int) $wallet->cents)]
         ]);
 
-        $toWallet = Wallet::find($attributes['to']);
-        $cents = $attributes['amount'] * 100;
+        $toWallet = Wallet::find($request['to']);
+        $cents = $request['amount'] * 100;
 
         $wallet->withdraw($cents);
         $toWallet->deposit($cents);

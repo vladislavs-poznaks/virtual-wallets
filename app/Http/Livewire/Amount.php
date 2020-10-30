@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class Amount extends Component
 {
-    public $amount = 300;
+    public int $amount = 300;
 
     public function render()
     {

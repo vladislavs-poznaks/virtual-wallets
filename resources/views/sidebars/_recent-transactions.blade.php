@@ -10,7 +10,7 @@
                     {{ $transaction->fromWallet->name }}
                 </a>
                 <div> to </div>
-                <a href="/wallets/{{ $transaction->toWallet->id }}" class="hover:underline">
+                <a href="{{ route('wallets.show', ['wallet' => $transaction->toWallet]) }}" class="hover:underline">
                     {{ $transaction->toWallet->name }}
                 </a>
             </div>
