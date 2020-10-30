@@ -1,4 +1,4 @@
-<div class="bg-gray-700 rounded-lg w-full h-64 px-4 py-6">
+<div class="bg-gray-700 rounded-lg w-full px-4 py-6">
     <h3>Your Other Wallets</h3>
     <div class="mt-4 space-y-2">
         @foreach($availableWallets as $wallet)

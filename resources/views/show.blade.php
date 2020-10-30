@@ -4,20 +4,20 @@
 
     <div class="flex">
         <div class="flex w-1/6">
-            @include('_sidebar-links')
+            @include('sidebars._nav')
         </div>
 
         <div class="w-1/2 space-y-4">
 
-            @include('_wallet-header')
+            @include('wallets._wallet-edit')
 
-            @include('_create-transaction')
+            @include('transactions.transaction-create')
 
             <div class="border border-gray-700 rounded-lg mt-10">
                 <h3 class="border-b border-gray-700 px-4 py-6">Transactions</h3>
 
                 @forelse($transactions as $transaction)
-                    @include('_transaction')
+                    @include('transactions._transaction')
                 @empty
                     <div class="px-4 py-6">
                         No transactions with this wallet...
@@ -27,7 +27,7 @@
 
         </div>
         <div class="flex w-1/4 ml-20">
-            @include('_wallets-summary')
+            @include('sidebars._other-wallets')
         </div>
     </div>
 
