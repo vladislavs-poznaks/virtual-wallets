@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Transaction;
+use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TransactionFactory extends Factory
@@ -22,7 +24,10 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => self::factoryForModel(User::class),
+            'from_wallet_id' => self::factoryForModel(Wallet::class),
+            'to_wallet_id' => self::factoryForModel(Wallet::class),
+            'cents' => rand(100, 500) * 100
         ];
     }
 }
