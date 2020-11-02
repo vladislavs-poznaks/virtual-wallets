@@ -22,7 +22,7 @@ class TransactionsController extends Controller
     {
 
         $request->validate([
-            'to' => ['required', new DifferentWallet($wallet->slug), 'exists:wallets,slug'],
+            'to' => ['required', new DifferentWallet($wallet->id), 'exists:wallets,id'],
             'amount' => ['required', new SufficientFunds((int) $wallet->cents)]
         ]);
 

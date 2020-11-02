@@ -36,8 +36,8 @@ class WalletsController extends Controller
         ]);
 
         Wallet::create([
+            'id' => Str::uuid(),
             'user_id' => auth()->user()->id,
-            'slug' => Str::slug($request['name']),
             'name' => $request['name'],
             'cents' => $request['amount'] * 100
         ]);
@@ -55,7 +55,7 @@ class WalletsController extends Controller
     {
         return response()->view('show', [
             'wallet' => $wallet,
-            'availableWallets' => auth()->user()->wallets->except($wallet->slug),
+            'availableWallets' => auth()->user()->wallets->except($wallet->id),
             'debitTransactions' => $wallet->debitTransactions,
             'creditTransactions' => $wallet->creditTransactions,
             'transactions' => $wallet->transactions()
@@ -77,7 +77,6 @@ class WalletsController extends Controller
 
         $wallet->update([
                 'name' => $request['name'],
-                'slug' => Str::slug($request['name']),
             ]);
 
         return redirect(route('wallets.show', ['wallet' => $wallet]));

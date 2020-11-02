@@ -11,11 +11,11 @@ class DifferentWallet implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param string $slug
+     * @param string $id
      */
-    public function __construct(string $slug)
+    public function __construct(string $id)
     {
-        $this->slug = $slug;
+        $this->id = $id;
     }
 
     /**
@@ -27,7 +27,7 @@ class DifferentWallet implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $this->slug != $value;
+        return $this->id != $value;
     }
 
     /**

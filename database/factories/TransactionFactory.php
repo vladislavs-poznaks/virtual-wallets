@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class TransactionFactory extends Factory
 {
@@ -24,6 +25,7 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
+            'id' => Str::uuid(),
             'user_id' => self::factoryForModel(User::class),
             'from_wallet_id' => self::factoryForModel(Wallet::class),
             'to_wallet_id' => self::factoryForModel(Wallet::class),

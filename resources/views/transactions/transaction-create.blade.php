@@ -17,7 +17,7 @@
                 class="bg-gray-800 text-sm rounded-full focus:outline-none focus:shadow-outline px-3 py-2 ml-4 w-4/5"
             >
                 @foreach($availableWallets as $walletTo)
-                    <option value="{{ $walletTo->slug }}">{{ $walletTo->name }}</option>
+                    <option value="{{ $walletTo->id }}">{{ $walletTo->name }}</option>
                 @endforeach
             </select>
 

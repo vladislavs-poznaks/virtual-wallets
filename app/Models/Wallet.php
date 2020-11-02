@@ -11,15 +11,8 @@ class Wallet extends Model
 
     public $incrementing = false;
 
-    protected $fillable = ['user_id', 'name', 'slug', 'cents'];
-
-    protected $primaryKey = 'slug';
+    protected $fillable = ['id', 'user_id', 'name', 'slug', 'cents'];
     protected $keyType = 'string';
-
-    public function getRouteKey()
-    {
-        return $this->slug;
-    }
 
     public function user()
     {

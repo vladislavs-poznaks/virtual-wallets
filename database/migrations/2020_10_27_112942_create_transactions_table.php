@@ -16,8 +16,8 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id');
             $table->foreignId('user_id');
-            $table->foreignId('from_wallet_id');
-            $table->foreignId('to_wallet_id');
+            $table->uuid('from_wallet_id')->nullable(false);
+            $table->uuid('to_wallet_id')->nullable(false);
             $table->integer('cents');
             $table->boolean('fraudulent')->default(false);
             $table->timestamps();

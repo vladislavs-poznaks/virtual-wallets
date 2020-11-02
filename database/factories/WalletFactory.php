@@ -26,9 +26,9 @@ class WalletFactory extends Factory
         $name = $this->faker->unique()->sentence(2);
 
         return [
+            'id' => Str::uuid(),
             'user_id' => self::factoryForModel(User::class),
             'name' => $name,
-            'slug' => Str::slug($name),
             'cents' => rand(100, 500) * 100,
         ];
     }
