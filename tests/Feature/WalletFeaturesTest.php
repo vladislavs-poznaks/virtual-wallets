@@ -34,49 +34,51 @@ class WalletFeaturesTest extends TestCase
             ->assertSee('Test Wallet');
     }
 
-//    /**
-//     * @test
-//     */
-//    public function a_user_can_rename_a_wallet()
-//    {
-//        $user = User::factory()->create();
-//
-//        $wallet = Wallet::factory()->create([
-//            'user_id' => $user->id,
-//            'name' => 'Test Wallet',
-//        ]);
-//
-//        $this->actingAs($user)->get(route('dashboard'))
-//            ->assertSee('Test Wallet');
-//
-//        $this->actingAs($user)->patch(route('wallets.update', ['wallet' => $wallet]), [
-//            'name' => 'Renamed Wallet'
-//        ])->assertRedirect(route('wallets.show', ['wallet' => $wallet]));
-//
-//        $this->assertEquals('Renamed Wallet', $user->wallets->first()->name);
-//
-//        $this->actingAs($user)->get(route('dashboard'))
-//            ->assertSee('Renamed Wallet');
-//    }
+    /**
+     * @test
+     */
+    public function a_user_can_rename_a_wallet()
+    {
+        $user = User::factory()->create();
 
-//    /**
-//     * @test
-//     */
-//    public function a_user_can_delete_a_wallet()
-//    {
-//        $user = User::factory()->create();
-//
-//        $wallet = Wallet::factory()->create([
-//            'user_id' => $user->id,
-//            'name' => 'Test Wallet',
-//        ]);
-//
-//        $this->actingAs($user)->get(route('dashboard'))
-//            ->assertSee('Test Wallet');
-//
-//        $this->actingAs($user)->delete(route('wallets.destroy', ['wallet' => $wallet]));
-//
-//        $this->actingAs($user)->get(route('dashboard'))
-//            ->assertDontSee('Test Wallet');
-//    }
+        $wallet = Wallet::factory()->create([
+            'user_id' => $user->id,
+            'name' => 'Test Wallet',
+        ]);
+
+        $this->actingAs($user)->get(route('dashboard'))
+            ->assertSee('Test Wallet');
+
+        $this->actingAs($user)->patch(route('wallets.update', ['wallet' => $wallet]), [
+            'name' => 'Renamed Wallet'
+        ])->assertRedirect(route('wallets.show', ['wallet' => $wallet]));
+
+        $this->assertEquals('Renamed Wallet', $user->wallets->first()->name);
+
+        $this->actingAs($user)->get(route('dashboard'))
+            ->assertSee('Renamed Wallet');
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_delete_a_wallet()
+    {
+        $user = User::factory()->create();
+
+        $wallet = Wallet::factory()->create([
+            'user_id' => $user->id,
+            'name' => 'Test Wallet',
+        ]);
+
+        $this->actingAs($user)->get(route('dashboard'))
+            ->assertSee('Test Wallet');
+
+        $this->actingAs($user)->delete(route('wallets.destroy', ['wallet' => $wallet]));
+
+        $this->assertCount(0, $user->wallets);
+
+        $this->actingAs($user)->get(route('dashboard'))
+            ->assertDontSee('Test Wallet');
+    }
 }

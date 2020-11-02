@@ -28,9 +28,14 @@ Using the Laravel PHP framework, create a basic “virtual wallet” application
 
 ### Worth noting...
 
-- A LiveWire component is being used to make amount change dynamically when changing slider's state.
-- Form data is being validated on front-end & back-end.
-- Unfortunately no tests were used in this project.
+- A LiveWire component is used to make amount change dynamically when changing slider's state.
+- Form data is validated on front-end & back-end.
+- There are Unit & Feature tests for everything except Wallet's Rename & Delete Features.
+
+### Planned further development
+
+- Refactoring as Laravel knowledge progresses.
+- Adding option for transactions between users by adding additional form field for user selection & making wallet selection change dynamically with Livewire. 
 
 ### Full UI's video
 
