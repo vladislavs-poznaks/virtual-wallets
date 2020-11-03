@@ -13,6 +13,12 @@
 
             @include('transactions.transaction-create')
 
+            @if(session('status'))
+                <div class="text-sm text-red-500 mt-10 text-center">
+                    {{ session('status') }}
+                </div>
+            @endif
+
             <div class="border border-gray-700 rounded-lg mt-10">
                 <h3 class="border-b border-gray-700 px-4 py-6">Transactions</h3>
 

@@ -16,23 +16,24 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id');
             $table->foreignId('user_id');
-            $table->uuid('from_wallet_id')->nullable(false);
-            $table->uuid('to_wallet_id')->nullable(false);
-            $table->integer('cents');
-            $table->boolean('fraudulent')->default(false);
+            $table->uuid('wallet_id')->nullable(false);
+            $table->uuid('partner_wallet_id')->nullable(false);
+            $table->bigInteger('cents');
+            $table->dateTime('fraudulent')->nullable(true)->default(null);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
 
-            $table->foreign('from_wallet_id')
+            $table->foreign('wallet_id')
                 ->references('id')
                 ->on('wallets')
                 ->onDelete('cascade');
 
-            $table->foreign('to_wallet_id')
+            $table->foreign('partner_wallet_id')
                 ->references('id')
                 ->on('wallets')
                 ->onDelete('cascade');

@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class SufficientFunds implements Rule
+class SenderHasSufficientFunds implements Rule
 {
     /**
      * @var int

@@ -7,7 +7,7 @@
                     {{ $wallet->name }}
                 </a>
                 <div>
-                    {{ $wallet->formattedFunds() }}
+                    {{ $wallet->funds }}
                 </div>
             </div>
         @endforeach
@@ -19,7 +19,7 @@
                 Total debit:
             </span>
             <span class="text-green-500">
-                + ${{ $debitTransactions->sum('cents') / 100 }}
+                {{ $wallet->debit }}
             </span>
         </div>
         <div>
@@ -27,7 +27,7 @@
                 Total credit:
             </span>
             <span class="text-red-500">
-                - ${{ $creditTransactions->sum('cents') / 100 }}
+                {{ $wallet->credit }}
             </span>
         </div>
 

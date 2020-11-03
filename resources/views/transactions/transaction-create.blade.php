@@ -6,13 +6,13 @@
 
         <div class="flex items-center">
             <label
-                for="to"
+                for="partner"
                 class="w-1/5"
             >To</label>
             <select
                 type="text"
-                id="to"
-                name="to"
+                id="partner"
+                name="partner"
                 required
                 class="bg-gray-800 text-sm rounded-full focus:outline-none focus:shadow-outline px-3 py-2 ml-4 w-4/5"
             >
@@ -22,7 +22,7 @@
             </select>
 
         </div>
-        @error('to')
+        @error('partner')
             <div class="text-sm text-red-500">{{ $message }}</div>
         @enderror
 

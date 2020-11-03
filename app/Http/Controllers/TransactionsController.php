@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionStoreRequest;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Rules\DifferentWallet;
-use App\Rules\SufficientFunds;
+use App\Rules\RecipientWalletIsDifferent;
+use App\Rules\SenderHasSufficientFunds;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -14,31 +15,18 @@ class TransactionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Illuminate\Http\Request $request
      * @param Wallet $wallet
-     * @return \Illuminate\Http\RedirectResponse
+     * @return //Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request, Wallet $wallet)
+    public function store(TransactionStoreRequest $request, Wallet $wallet)
     {
+        $recipient = Wallet::find($request->partner);
 
-        $request->validate([
-            'to' => ['required', new DifferentWallet($wallet->id), 'exists:wallets,id'],
-            'amount' => ['required', new SufficientFunds((int) $wallet->cents)]
-        ]);
+        $cents = $request->amount * 100;
 
-        $toWallet = Wallet::find($request['to']);
-        $cents = $request['amount'] * 100;
-
-        $wallet->withdraw($cents);
-        $toWallet->deposit($cents);
-
-        Transaction::create([
-            'id' => Str::uuid(),
-            'user_id' => auth()->user()->id,
-            'from_wallet_id' => $wallet->id,
-            'to_wallet_id' => $toWallet->id,
-            'cents' => $cents
-        ]);
+        $wallet->withdraw($cents, $recipient);
+        $recipient->deposit($cents, $wallet);
 
         return redirect(route('wallets.show', ['wallet' => $wallet]));
     }
@@ -69,6 +57,7 @@ class TransactionsController extends Controller
     {
         $transaction->delete();
 
-        return redirect(route('wallets.show', ['wallet' => $wallet]));
+        return redirect(route('wallets.show', ['wallet' => $wallet]))
+            ->with('status', 'Transaction successfully deleted!');
     }
 }

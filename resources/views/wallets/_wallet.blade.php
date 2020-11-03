@@ -5,7 +5,7 @@
                 {{ $wallet->name }}
             </div>
             <div>
-                {{ $wallet->formattedFunds() }}
+                {{ $wallet->funds }}
             </div>
         </div>
     </div>

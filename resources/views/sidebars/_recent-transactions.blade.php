@@ -4,14 +4,14 @@
         @forelse($transactions as $transaction)
             <div class="flex space-x-2">
                 <div>
-                    {{ $transaction->formattedFunds() }} from
+                    {{ $transaction->amount }} from
                 </div>
-                <a href="{{ route('wallets.show', ['wallet' => $transaction->fromWallet]) }}" class="hover:underline">
-                    {{ $transaction->fromWallet->name }}
+                <a href="{{ route('wallets.show', ['wallet' => $transaction->wallet]) }}" class="hover:underline">
+                    {{ $transaction->wallet->name }}
                 </a>
                 <div> to </div>
-                <a href="{{ route('wallets.show', ['wallet' => $transaction->toWallet]) }}" class="hover:underline">
-                    {{ $transaction->toWallet->name }}
+                <a href="{{ route('wallets.show', ['wallet' => $transaction->partner]) }}" class="hover:underline">
+                    {{ $transaction->partner->name }}
                 </a>
             </div>
         @empty

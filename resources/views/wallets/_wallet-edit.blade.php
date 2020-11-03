@@ -2,7 +2,7 @@
 
     <div class="flex justify-between text-2xl font-bold">
         <h2>{{ $wallet->name }}</h2>
-        <h2>{{ $wallet->formattedFunds() }}</h2>
+        <h2>{{ $wallet->funds }}</h2>
     </div>
 
 

@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class ValidAmount implements Rule
+class WalletAmountIsValid implements Rule
 {
     /**
      * @var int

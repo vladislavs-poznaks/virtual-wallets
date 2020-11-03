@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\WalletStoreRequest;
+use App\Http\Requests\WalletUpdateRequest;
 use App\Models\Wallet;
-use App\Rules\ValidAmount;
+use App\Rules\WalletAmountIsValid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -28,18 +30,13 @@ class WalletsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(WalletStoreRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'unique:wallets', 'max:20'],
-            'amount' => ['required', new ValidAmount()]
-        ]);
-
         Wallet::create([
             'id' => Str::uuid(),
             'user_id' => auth()->user()->id,
-            'name' => $request['name'],
-            'cents' => $request['amount'] * 100
+            'name' => $request->name,
+            'cents' => $request->amount * 100
         ]);
 
         return redirect(route('dashboard'));
@@ -56,9 +53,9 @@ class WalletsController extends Controller
         return response()->view('show', [
             'wallet' => $wallet,
             'availableWallets' => auth()->user()->wallets->except($wallet->id),
-            'debitTransactions' => $wallet->debitTransactions,
-            'creditTransactions' => $wallet->creditTransactions,
-            'transactions' => $wallet->transactions()
+//            'debitTransactions' => $wallet->debitTransactions,
+//            'creditTransactions' => $wallet->creditTransactions,
+            'transactions' => $wallet->transactions
         ]);
     }
 
@@ -69,17 +66,14 @@ class WalletsController extends Controller
      * @param \App\Models\Wallet $wallet
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Wallet $wallet)
+    public function update(WalletUpdateRequest $request, Wallet $wallet)
     {
-        $request->validate([
-            'name' => ['required', 'unique:wallets', 'max:20']
-        ]);
-
         $wallet->update([
-                'name' => $request['name'],
+                'name' => $request->name,
             ]);
 
-        return redirect(route('wallets.show', ['wallet' => $wallet]));
+        return redirect(route('wallets.show', ['wallet' => $wallet]))
+            ->with('status', 'Wallet\'s name has been changed!');
     }
 
     /**
@@ -92,6 +86,7 @@ class WalletsController extends Controller
     {
         $wallet->delete();
 
-        return redirect(route('dashboard'));
+        return redirect(route('dashboard'))
+            ->with('status', 'Wallet "' . $wallet->name . '" successfully deleted!');
     }
 }

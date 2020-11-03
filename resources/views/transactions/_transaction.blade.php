@@ -2,22 +2,16 @@
         <div class="space-y-2">
             <div class="flex justify-between items-center">
                 <div class="flex space-x-3">
-                    <div class="text-{{ $debitTransactions->contains($transaction) ? 'green' : 'red' }}-500">
-                        {{ ($debitTransactions->contains($transaction) ? '+' : '-') . $transaction->formattedFunds()}}
-                    </div>
-                    <div>
-                        @if($debitTransactions->contains($transaction))
-                            from {{ $transaction->fromWallet->name }}
-                        @endif
-
-                        @if($creditTransactions->contains($transaction))
-                            to {{ $transaction->toWallet->name }}
-                        @endif
-                    </div>
+                    <span class="text-{{ $transaction->isIncoming() ? 'green' : 'red' }}-500">
+                        {{ $transaction->amount }}
+                    </span>
+                    <span>
+                        {{ ($transaction->isIncoming() ? 'from' : 'to') . ' ' . $transaction->partner->name }}
+                    </span>
                 </div>
                 @if($transaction->fraudulent)
                     <div class="text-sm text-red-500">
-                        (Marked as Fraudulent)
+                        [Marked as Fraudulent]
                     </div>
                 @endif
             </div>

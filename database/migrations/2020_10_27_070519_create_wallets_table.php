@@ -16,15 +16,15 @@ class CreateWalletsTable extends Migration
         Schema::create('wallets', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignId('user_id');
-            $table->string('name')->unique();
-            $table->integer('cents');
+            $table->string('name');
+            $table->unsignedBigInteger('cents');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-
         });
     }
 

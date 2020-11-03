@@ -3,19 +3,18 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Str;
 
-class DifferentWallet implements Rule
+class WalletNameIsAvailable implements Rule
 {
-    private $id;
-
     /**
      * Create a new rule instance.
      *
-     * @param string $id
+     * @return void
      */
-    public function __construct(string $id)
+    public function __construct()
     {
-        $this->id = $id;
+
     }
 
     /**
@@ -27,7 +26,11 @@ class DifferentWallet implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $this->id != $value;
+        $wallets = auth()->user()->wallets->pluck('name')->map(function ($name) {
+            return Str::lower($name);
+        });
+
+        return ! $wallets->contains(Str::lower($value));
     }
 
     /**
@@ -37,6 +40,6 @@ class DifferentWallet implements Rule
      */
     public function message()
     {
-        return 'Recipient must differ from current wallet.';
+        return 'Wallet :attribute must be unique.';
     }
 }
