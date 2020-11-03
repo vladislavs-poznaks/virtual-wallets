@@ -5,19 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TransactionStoreRequest;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Rules\RecipientWalletIsDifferent;
-use App\Rules\SenderHasSufficientFunds;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Http\RedirectResponse;
 
 class TransactionsController extends Controller
 {
     /**
      * Store a newly created resource in storage.
      *
-     * @param Illuminate\Http\Request $request
+     * @param TransactionStoreRequest $request
      * @param Wallet $wallet
-     * @return //Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(TransactionStoreRequest $request, Wallet $wallet)
     {
@@ -34,10 +32,10 @@ class TransactionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Wallet $wallet
-     * @param \App\Models\Transaction $transaction
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Wallet $wallet
+     * @param Transaction $transaction
+     * @return RedirectResponse
      */
     public function update(Request $request, Wallet $wallet, Transaction $transaction)
     {
@@ -49,9 +47,9 @@ class TransactionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Wallet $wallet
-     * @param \App\Models\Transaction $transaction
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Wallet $wallet
+     * @param Transaction $transaction
+     * @return RedirectResponse
      */
     public function destroy(Wallet $wallet, Transaction $transaction)
     {

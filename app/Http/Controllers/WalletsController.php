@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\WalletStoreRequest;
 use App\Http\Requests\WalletUpdateRequest;
 use App\Models\Wallet;
-use App\Rules\WalletAmountIsValid;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 
 class WalletsController extends Controller
@@ -27,8 +27,8 @@ class WalletsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param WalletStoreRequest $request
+     * @return RedirectResponse
      */
     public function store(WalletStoreRequest $request)
     {
@@ -45,16 +45,14 @@ class WalletsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Wallet $wallet
-     * @return \Illuminate\Http\Response
+     * @param Wallet $wallet
+     * @return Response
      */
     public function show(Wallet $wallet)
     {
         return response()->view('show', [
             'wallet' => $wallet,
             'availableWallets' => auth()->user()->wallets->except($wallet->id),
-//            'debitTransactions' => $wallet->debitTransactions,
-//            'creditTransactions' => $wallet->creditTransactions,
             'transactions' => $wallet->transactions
         ]);
     }
@@ -62,9 +60,9 @@ class WalletsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Wallet $wallet
-     * @return \Illuminate\Http\RedirectResponse
+     * @param WalletUpdateRequest $request
+     * @param Wallet $wallet
+     * @return RedirectResponse
      */
     public function update(WalletUpdateRequest $request, Wallet $wallet)
     {
@@ -79,8 +77,8 @@ class WalletsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Wallet $wallet
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Wallet $wallet
+     * @return RedirectResponse
      */
     public function destroy(Wallet $wallet)
     {

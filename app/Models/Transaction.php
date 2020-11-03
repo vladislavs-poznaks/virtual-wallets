@@ -22,11 +22,6 @@ class Transaction extends Model
             . '$' . number_format(abs($this->cents) / 100, 2);
     }
 
-//    public function setCentsAttribute(float $amount): void
-//    {
-//        $this->attributes['amount'] = (int) ($amount * 100);
-//    }
-
     public function isIncoming(): bool
     {
         return $this->cents > 0;
