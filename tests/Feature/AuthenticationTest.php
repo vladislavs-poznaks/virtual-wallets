@@ -11,9 +11,7 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_user_can_register()
     {
         $this->get(route('register'))
@@ -29,9 +27,7 @@ class AuthenticationTest extends TestCase
         $this->assertEquals('Test User', User::where('email', 'test@example.com')->first()->name);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_user_can_login()
     {
         $this->get(route('login'))

@@ -13,63 +13,66 @@ class TransactionTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_transaction_has_an_amount_of_funds_transferred()
     {
-        $user = User::factory()->create(['id' => 10]);
+        $WALLET_INITIAL_BALANCE = 10000;
+        $TRANSACTION_AMOUNT = 500;
 
-        $walletOne = Wallet::factory()->create([
-            'id' => 1,
+        $EXPECTED_CREDIT_AMOUNT = -500;
+        $EXPECTED_DEBIT_AMOUNT = 500;
+
+        $user = User::factory()->create(['id' => 10]);
+        $this->actingAs($user);
+
+        $wallet = Wallet::factory()->create([
             'user_id' => $user->id,
-            'cents' => 10000
+            'cents' => $WALLET_INITIAL_BALANCE
         ]);
 
-        $walletTwo = Wallet::factory()->create([
-            'id' => 2,
+        $partner = Wallet::factory()->create([
             'user_id' => $user->id
         ]);
 
-        $transaction = Transaction::factory()->create([
-            'id' => 10,
-            'user_id' => $user->id,
-            'from_wallet_id' => $walletOne->id,
-            'to_wallet_id' => $walletTwo->id,
-            'cents' => 1000
-        ]);
+        $wallet->withdraw($TRANSACTION_AMOUNT, $partner);
+        $partner->deposit($TRANSACTION_AMOUNT, $wallet);
 
-        $this->assertEquals(1000, $transaction->cents);
+        $this->assertEquals($EXPECTED_CREDIT_AMOUNT, $wallet->transactions->first()->cents);
+        $this->assertEquals($EXPECTED_DEBIT_AMOUNT, $partner->transactions->first()->cents);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_transaction_belongs_to_two_separate_wallets()
     {
+        $WALLET_INITIAL_BALANCE = 10000;
+        $TRANSACTION_AMOUNT = 500;
+
+        $EXPECTED_CREDIT_AMOUNT = -500;
+        $EXPECTED_DEBIT_AMOUNT = 500;
+
         $user = User::factory()->create(['id' => 10]);
+        $this->actingAs($user);
 
-        $walletOne = Wallet::factory()->create([
-            'id' => 1,
+        $wallet = Wallet::factory()->create([
+            'user_id' => $user->id,
             'name' => 'Test Wallet One',
+            'cents' => $WALLET_INITIAL_BALANCE
+        ]);
+
+        $partner = Wallet::factory()->create([
             'user_id' => $user->id,
+            'name' => 'Test Wallet Two'
         ]);
 
-        $walletTwo = Wallet::factory()->create([
-            'id' => 2,
-            'name' => 'Test Wallet Two',
-            'user_id' => $user->id
-        ]);
+        $wallet->withdraw($TRANSACTION_AMOUNT, $partner);
+        $partner->deposit($TRANSACTION_AMOUNT, $wallet);
 
-        $transaction = Transaction::factory()->create([
-            'id' => 10,
-            'user_id' => $user->id,
-            'from_wallet_id' => $walletOne->id,
-            'to_wallet_id' => $walletTwo->id,
-            'cents' => 1000
-        ]);
+        $transaction = Transaction::where('wallet_id', $wallet->id)->first();
 
-        $this->assertEquals('Test Wallet One', $transaction->fromWallet->name);
-        $this->assertEquals('Test Wallet Two', $transaction->toWallet->name);
+        $this->assertEquals('Test Wallet One', $transaction->wallet->name);
+
+        $transaction = Transaction::where('wallet_id', $partner->id)->first();
+
+        $this->assertEquals('Test Wallet Two', $transaction->wallet->name);
     }
 }

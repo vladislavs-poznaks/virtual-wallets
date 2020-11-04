@@ -12,9 +12,7 @@ class UserTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_user_has_a_name_and_an_email()
     {
         $user = User::factory()->create([
@@ -26,52 +24,53 @@ class UserTest extends TestCase
         $this->assertEquals('Test Email', $user->email);
     }
 
-    /**
-     * @test
-     */
-    public function a_user_can_have_one_or_more_wallets()
+    /** @test */
+    public function a_user_can_have_one_or_more_transactions()
     {
-        $user = User::factory()->create(['id' => 3]);
+        $WALLET_COUNT = 2;
+        $WALLET_INITIAL_BALANCE = 10000;
+        // There are two transactions for each operation (debit & credit)
+        $TRANSACTION_COUNT = 4;
+        $TRANSACTION_AMOUNT_IN_CENTS = 1000;
 
-        $wallet = Wallet::factory()->count(5)->create([
+        $user = User::factory()->create(['id' => 10]);
+        $this->actingAs($user);
+
+        $wallet = Wallet::factory()->create([
+            'user_id' => $user->id,
+            'cents' => $WALLET_INITIAL_BALANCE
+        ]);
+
+        $partner = Wallet::factory()->create([
             'user_id' => $user->id
         ]);
 
-        Wallet::factory()->count(5)->create([
+        $wallet->withdraw($TRANSACTION_AMOUNT_IN_CENTS, $partner);
+        $partner->deposit($TRANSACTION_AMOUNT_IN_CENTS, $wallet);
+
+        $wallet->withdraw($TRANSACTION_AMOUNT_IN_CENTS, $partner);
+        $partner->deposit($TRANSACTION_AMOUNT_IN_CENTS, $wallet);
+
+        $this->assertCount($TRANSACTION_COUNT, $user->transactions);
+        $this->assertCount($WALLET_COUNT, $user->wallets);
+    }
+
+    /** @test */
+    public function a_user_can_have_one_or_more_wallets()
+    {
+        $WALLET_COUNT = 5;
+
+        $user = User::factory()->create(['id' => 3]);
+        // User wallets
+        $wallet = Wallet::factory()->count($WALLET_COUNT)->create([
+            'user_id' => $user->id
+        ]);
+        // Other user wallets
+        Wallet::factory()->count($WALLET_COUNT)->create([
             'user_id' => User::factory()->create()
         ]);
 
-        $this->assertCount(5, $user->wallets);
-    }
-
-    /**
-     * @test
-     */
-    public function a_user_can_have_one_or_more_transactions()
-    {
-        $user = User::factory()->create(['id' => 10]);
-
-        $walletFrom = Wallet::factory()->create([
-            'id' => 1,
-            'user_id' => $user->id,
-            'cents' => 10000
-        ]);
-
-        $walletTo = Wallet::factory()->create([
-            'id' => 2,
-            'user_id' => $user->id
-        ]);
-
-        $transaction = Transaction::factory()->count(2)->create([
-            'id' => 10,
-            'user_id' => $user->id,
-            'from_wallet_id' => $walletFrom->id,
-            'to_wallet_id' => $walletTo->id,
-            'cents' => 1000
-        ]);
-
-        $this->assertCount(2, $user->transactions);
-        $this->assertCount(2, $user->wallets);
+        $this->assertCount($WALLET_COUNT, $user->wallets);
     }
 
 }
