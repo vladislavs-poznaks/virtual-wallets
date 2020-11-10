@@ -6,7 +6,7 @@
                         {{ $transaction->amount }}
                     </span>
                     <span>
-                        {{ ($transaction->isIncoming() ? 'from' : 'to') . ' ' . $transaction->partner->name }}
+                        {{ ($transaction->isIncoming() ? 'from' : 'to') . ' ' . ($transaction->partner ? $transaction->partner->name : '(Wallet Deleted)') }}
                     </span>
                 </div>
                 @if($transaction->fraudulent)
