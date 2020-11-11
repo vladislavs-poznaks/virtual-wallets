@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Wallet;
+use App\Rules\MinimumAmount;
 use App\Rules\RecipientWalletIsDifferent;
 use App\Rules\SenderHasSufficientFunds;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,8 +28,8 @@ class TransactionStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'partner' => ['required', new RecipientWalletIsDifferent($this->wallet->id)],
-            'amount' => ['required', new SenderHasSufficientFunds($this->wallet->cents)]
+            'partner' => ['required', 'exists:wallets,id', new RecipientWalletIsDifferent($this->wallet->id)],
+            'amount' => ['required', new MinimumAmount(), new SenderHasSufficientFunds($this->wallet->cents)]
         ];
     }
 }

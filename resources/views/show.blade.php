@@ -30,7 +30,6 @@
                     </div>
                 @endforelse
             </div>
-
         </div>
         <div class="flex w-1/4 ml-20">
             @include('sidebars._other-wallets')

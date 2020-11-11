@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WalletStoreRequest;
 use App\Http\Requests\WalletUpdateRequest;
+use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
@@ -52,8 +53,8 @@ class WalletsController extends Controller
     {
         return response()->view('show', [
             'wallet' => $wallet,
-            'availableWallets' => auth()->user()->wallets->except($wallet->id),
-            'transactions' => $wallet->transactions
+            'transactions' => $wallet->transactions,
+            'otherWallets' => auth()->user()->wallets->except($wallet->id)
         ]);
     }
 

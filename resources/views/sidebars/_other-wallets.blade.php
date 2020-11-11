@@ -1,13 +1,13 @@
 <div class="bg-gray-700 rounded-lg w-full px-4 py-6">
     <h3>Your Other Wallets</h3>
     <div class="mt-4 space-y-2">
-        @foreach($availableWallets as $wallet)
+        @foreach($otherWallets as $otherWallet)
             <div class="flex justify-between">
-                <a href="{{ route('wallets.show', ['wallet' => $wallet]) }}" class="hover:underline">
-                    {{ $wallet->name }}
+                <a href="{{ route('wallets.show', ['wallet' => $otherWallet]) }}" class="hover:underline">
+                    {{ $otherWallet->name }}
                 </a>
                 <div>
-                    {{ $wallet->funds }}
+                    {{ $otherWallet->funds }}
                 </div>
             </div>
         @endforeach
